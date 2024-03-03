@@ -1,44 +1,58 @@
 # Define hotel_cost function
 def hotel_cost(num_nights):
-    # Assume £150 per night
-    return 150 * num_nights
+    price_per_night = 150  # can be replace with your desired price per night
+    return num_nights * price_per_night
 
 # Define plane_cost function
 def plane_cost(city_flight):
-    # Prices for different cities
-    if city_flight == "London":
-        return 300
-    elif city_flight == "New York":
-        return 400
-    elif city_flight == "San Francisco":
-        return 500
-    else:
-        return 250  # Default price if city not found
+    flight_costs = {
+      "London": 400,
+      "Paris": 500,
+      "New York": 700,
+      "San Francisco": 800,
+  }
+    return flight_costs.get(city_flight, 0) # Return 0 for invalid city
 
 # Define car_rental function
 def car_rental(rental_days):
-    # Assume £60 per day
-    return 60 * rental_days
+    price_per_day = 60  # can be replace with your desired price per day
+    return rental_days * price_per_day
 
 # Define function holiday_cost
-def holiday_cost(hotel_costs, plane_costs, car_rental_costs):
-    return hotel_costs + plane_costs + car_rental_costs
+def holiday_cost(hotel_cost_func, plane_cost_func, car_rental_func):
+    """
+  Calculates the total cost of the holiday by calling other cost functions.
 
-# user inputs
-city_flight = input("Enter the city you will be flying to (e.g., London, New York, San Francisco): ")
-num_nights = int(input("Enter the number of nights you will be staying at a hotel: "))
-rental_days = int(input("Enter the number of days for which you will be hiring a car: "))
+  Args:
+      hotel_cost_func: A function that calculates hotel cost.
+      plane_cost_func: A function that calculates flight cost.
+      car_rental_func: A function that calculates car rental cost.
+      num_nights: The number of nights staying at the hotel.
+      city_flight: The city the user is flying to.
+      rental_days: The number of days renting a car.
 
-# Calculating costs
-total_hotel_cost = hotel_cost(num_nights)
-total_plane_cost = plane_cost(city_flight)
-total_car_rental_cost = car_rental(rental_days)
-total_cost = holiday_cost(total_hotel_cost, total_plane_cost, total_car_rental_cost)
+  Returns:
+      The total cost of the holiday.
+  """
+    total_hotel_cost = hotel_cost_func(num_nights)
+    total_plane_cost = plane_cost_func(city_flight)
+    total_car_rental_cost = car_rental_func(rental_days)
+    return total_hotel_cost + total_plane_cost + total_car_rental_cost
+
+# Get user inputs
+city_flight = input("Enter the city you will be flying to: ")
+num_nights = int(input("Enter the number of nights staying at a hotel: "))
+rental_days = int(input("Enter the number of days renting a car: "))
+
+
+# Call holiday_cost with functions as arguments
+total_cost = holiday_cost(hotel_cost, plane_cost, car_rental)
+
 
 # Printing the final output as holiday details
 print("\nHoliday Details:")
-print("Destination:", city_flight)
-print("Number of Nights at Hotel:", num_nights)
-print("Number of Days for Car Rental:", rental_days)
-print("Flight Cost:", total_plane_cost)
-print("Total Cost:", total_cost)
+print(f"Destination: {city_flight}")
+print(f"Number of Nights: {num_nights}")
+print(f"Number of Days for Car Rental: {rental_days}")
+print(f"Flight Cost: £{plane_cost(city_flight)}")
+print(f"Total Cost: £{total_cost}")
